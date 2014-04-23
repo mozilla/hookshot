@@ -1,0 +1,13 @@
+{
+  "name": "hookshot",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.0.0",
+    "body-parser": "^1.0.2",
+    "habitat": "^1.1.0"
+  }
+}
