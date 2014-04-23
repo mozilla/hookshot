@@ -4,14 +4,12 @@ module.exports = function(env) {
   var morgan = require('morgan');
 
   var app = express();
-  // var routes = require('./routes');
+  var routes = require('../routes')(env);
 
   app.use(morgan('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded());
-
-  // Add routes
-  //routes(env);
+  app.use(routes);
 
   return app;
 };
