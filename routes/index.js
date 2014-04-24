@@ -4,18 +4,22 @@ var hatchet = require('hatchet');
 module.exports = function(env) {
 
   var router = express.Router();
- var auth = require('./auth');
+  var auth = require('./auth');
 
   router.get('/', function(req, res) {
     res.send('Webmaker Hookshoot is up and running');
   });
 
-  // https://github.com/mozilla/badgekit-api/blob/master/docs/webhooks.md
   router.post('/webhook', auth, function(req, res) {
+
+    // Testing!
     console.log(req.body);
-    // hatchet.send('badge_application_received', {
-    //   email: 
-    // });
+
+    // This should be some stuff that is received from the webhook
+    var data = {};
+
+    hatchet.send('badge_application_received', data);
+
   });
 
   return router;
