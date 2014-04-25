@@ -12,6 +12,7 @@
     "morgan": "^1.0.0",
     "hatchet": "^0.1.0",
     "jsonwebtoken": "^0.3.0",
+    "badgekit-api-client": "git+https://github.com/mozilla/badgekit-api-client.git#v0.2.1",
     "crypto": "0.0.3"
   }
 }
