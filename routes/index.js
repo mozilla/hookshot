@@ -11,13 +11,13 @@ module.exports = function(env) {
   });
 
   function awardHook(req, res) {
-    var data = {
+    var hatchetData = {
       badge: req.body.badge,
-      recipient: req.body.recipient,
+      email: req.body.recipient,
       assertionUrl: req.body.assertionUrl
     };
 
-    hatchet.send('badge_awarded', data);
+    hatchet.send('badge_awarded', hatchetData);
 
     return res.send(200);
   }
@@ -48,6 +48,12 @@ module.exports = function(env) {
       });
     }
 
+    const hatchetData = {
+      email: application.learner,
+      application: application,
+      review: review
+    };
+
     if (approved) {
       var query = {
         system: badge.system.slug,
@@ -55,11 +61,11 @@ module.exports = function(env) {
         email: application.learner
       }
 
-      hatchet.send('application_approved', { application: application, review: review });
+      hatchet.send('application_approved', hatchetData);
       return badgekit.createBadgeInstance(query, finish);
     }
     else {
-      hatchet.send('application_denied', { application: application, review: review });
+      hatchet.send('application_denied', hatchetData);
       return finish();
     }
   }
