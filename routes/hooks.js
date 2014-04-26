@@ -1,3 +1,5 @@
+var hatchet = "hatchet";
+
 module.exports = {
 
   award: function awardHook(req, res) {
