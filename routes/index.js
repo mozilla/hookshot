@@ -61,11 +61,11 @@ module.exports = function(env) {
         email: application.learner
       }
 
-      hatchet.send('application_approved', hatchetData);
+      hatchet.send('badge_application_approved', hatchetData);
       return badgekit.createBadgeInstance(query, finish);
     }
     else {
-      hatchet.send('application_denied', hatchetData);
+      hatchet.send('badge_application_denied', hatchetData);
       return finish();
     }
   }
