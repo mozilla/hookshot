@@ -3,6 +3,7 @@ var hatchet = require('hatchet');
 module.exports = function (badgekit) {
   return {
     award: function awardHook(req, res) {
+      console.log(req.body.badge);
       var hatchetData = {
         badge: req.body.badge,
         email: req.body.recipient,
