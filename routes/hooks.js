@@ -6,7 +6,7 @@ module.exports = function (badgekit) {
       console.log(req.body.email, req.body.badge);
       var hatchetData = {
         badge: req.body.badge,
-        email: req.body.recipient,
+        email: req.body.email,
         assertionUrl: req.body.assertionUrl,
         comment: req.body.comment
       };
