@@ -1,6 +1,9 @@
 var hatchet = require('hatchet');
 
-module.exports = function (badgekit) {
+module.exports = function (env, badgekitApi, badgekitUserApi) {
+  const BADGEKIT_API_SYSTEM = env.get('BADGEKIT_API_SYSTEM', 'webmaker');
+  const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-super-mentor');
+
   return {
     award: function awardHook(req, res) {
       console.log(req.body.email, req.body.badge);
@@ -12,6 +15,16 @@ module.exports = function (badgekit) {
       };
 
       hatchet.send('badge_awarded', hatchetData);
+
+      if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
+        var permissionOptions = {
+          email: req.body.email,
+          context: { system: BADGEKIT_API_SYSTEM },
+          permissions: { canReview: 'true' }
+        };
+
+        badgekitUserApi.setUserPermissions(permissionOptions);
+      } 
 
       return res.send(200);
     },
@@ -34,7 +47,7 @@ module.exports = function (badgekit) {
           return res.send(500, { error: err });
 
         application.processed = new Date();
-        badgekit.updateApplication({ system: badge.system.slug, badge: badge.slug, application: application }, function (err) {
+        badgekitApi.updateApplication({ system: badge.system.slug, badge: badge.slug, application: application }, function (err) {
           if (err)
             return res.send(500, { error: err});
 
@@ -56,7 +69,7 @@ module.exports = function (badgekit) {
         }
 
         hatchet.send('badge_application_approved', hatchetData);
-        return badgekit.createBadgeInstance(query, finish);
+        return badgekitApi.createBadgeInstance(query, finish);
       }
       else {
         hatchet.send('badge_application_denied', hatchetData);
