@@ -1,11 +1,15 @@
 var express = require('express');
+var UserClient = require('webmaker-user-client');
 
 module.exports = function(env) {
   var router = express.Router();
   var auth = require('./auth')(env);
   var badgekitApi = require('../lib/badgekit-api')(env);
   var badgekitUserApi = require('../lib/badgekit-user-api')(env);
-  var hooks = require('./hooks')(env, badgekitApi, badgekitUserApi);
+  var userClient = new UserClient({
+    endpoint: env.get('LOGIN_URL_WITH_AUTH', 'http://testuser@password:localhost:3000')
+  });
+  var hooks = require('./hooks')(env, badgekitApi, badgekitUserApi, userClient);
 
   router.get('/', function(req, res) {
     res.send('Webmaker Hookshoot is up and running');
