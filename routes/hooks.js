@@ -1,12 +1,11 @@
 var hatchet = require('hatchet');
 
-module.exports = function (env, badgekitApi, badgekitUserApi) {
+module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
   const BADGEKIT_API_SYSTEM = env.get('BADGEKIT_API_SYSTEM', 'webmaker');
   const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-super-mentor');
 
   return {
     award: function awardHook(req, res) {
-      console.log(req.body.email, req.body.badge);
       var hatchetData = {
         badge: req.body.badge,
         email: req.body.email,
@@ -24,7 +23,15 @@ module.exports = function (env, badgekitApi, badgekitUserApi) {
         };
 
         badgekitUserApi.setUserPermissions(permissionOptions);
-      } 
+        userClient.update.byEmail(req.body.email, {
+          isCollaborator: true
+        }, function (err, user) {
+          if (err) {
+            // We need some better error handling
+            return console.log(err);
+          }
+        });
+      }
 
       return res.send(200);
     },
