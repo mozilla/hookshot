@@ -7,7 +7,7 @@ module.exports = function(env) {
   var badgekitApi = require('../lib/badgekit-api')(env);
   var badgekitUserApi = require('../lib/badgekit-user-api')(env);
   var userClient = new UserClient({
-    endpoint: env.get('LOGIN_URL_WITH_AUTH', 'http://testuser@password:localhost:3000')
+    endpoint: env.get('LOGIN_URL_WITH_AUTH')
   });
   var hooks = require('./hooks')(env, badgekitApi, badgekitUserApi, userClient);
 
