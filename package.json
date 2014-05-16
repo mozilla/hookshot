@@ -12,8 +12,8 @@
     "morgan": "^1.0.0",
     "hatchet": "^0.1.0",
     "jsonwebtoken": "^0.3.0",
-    "badgekit-api-client": "git+https://github.com/mozilla/badgekit-api-client.git#v0.2.1",
-    "webmaker-user-client": "0.0.1",
+    "badgekit-api-client": "git+https://github.com/mozilla/badgekit-api-client.git#v0.2.2",
+    "webmaker-user-client": "0.0.2",
     "crypto": "0.0.3",
     "request": "2.34.0"
   }

@@ -5,35 +5,45 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
   const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-super-mentor');
 
   return {
-    award: function awardHook(req, res) {
-      var hatchetData = {
-        badge: req.body.badge,
-        email: req.body.email,
-        assertionUrl: req.body.assertionUrl,
-        comment: req.body.comment
-      };
+    award: function awardHook(req, res, next) {
 
-      hatchet.send('badge_awarded', hatchetData);
+      userClient.get.byEmail(req.body.email, function (err, user) {
 
-      if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
-        var permissionOptions = {
+        if (err) {
+          console.log(err.stack);
+        }
+
+        var hatchetData = {
+          badge: req.body.badge,
           email: req.body.email,
-          context: { system: BADGEKIT_API_SYSTEM },
-          permissions: { canReview: 'true' }
+          user: user,
+          assertionUrl: req.body.assertionUrl,
+          comment: req.body.comment
         };
 
-        badgekitUserApi.setUserPermissions(permissionOptions);
-        userClient.update.byEmail(req.body.email, {
-          isCollaborator: true
-        }, function (err, user) {
-          if (err) {
-            // We need some better error handling
-            return console.log(err);
-          }
-        });
-      }
+        hatchet.send('badge_awarded', hatchetData);
 
-      return res.send(200);
+        if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
+          var permissionOptions = {
+            email: req.body.email,
+            context: { system: BADGEKIT_API_SYSTEM },
+            permissions: { canReview: 'true' }
+          };
+
+          badgekitUserApi.setUserPermissions(permissionOptions);
+          userClient.update.byEmail(req.body.email, {
+            isCollaborator: true
+          }, function (err, user) {
+            if (err) {
+              // We need some better error handling
+              return console.log(err);
+            }
+          });
+        }
+
+        return res.send(200);
+
+      });
     },
 
     claim: function claimHook(req, res) {
