@@ -72,7 +72,8 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
         var query = {
           system: badge.system.slug,
           badge: badge.slug,
-          email: application.learner
+          email: application.learner,
+          comment: review.comment
         }
 
         hatchet.send('badge_application_approved', hatchetData);
