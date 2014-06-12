@@ -2,7 +2,8 @@ var hatchet = require('hatchet');
 
 module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
   const BADGEKIT_API_SYSTEM = env.get('BADGEKIT_API_SYSTEM', 'webmaker');
-  const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-super-mentor');
+  const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-mentor');
+  const SUPERMENTOR_BADGE_SLUG = env.get('SUPERMENTOR_BADGE_SLUG', 'webmaker-super-mentor')
 
   return {
     award: function awardHook(req, res) {
@@ -15,16 +16,20 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
 
       hatchet.send('badge_awarded', hatchetData);
 
-      if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
-        var permissionOptions = {
-          email: req.body.email,
-          context: { system: BADGEKIT_API_SYSTEM },
-          permissions: { canReview: 'true' }
-        };
-
-        badgekitUserApi.setUserPermissions(permissionOptions);
+      if (req.body.badge.slug === SUPERMENTOR_BADGE_SLUG) {
         userClient.update.byEmail(req.body.email, {
-          isCollaborator: true
+          isSuperMentor: true
+        }, function (err, user) {
+          if (err) {
+            // We need some better error handling
+            return console.log(err);
+          }
+        });
+      }
+
+      if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
+        userClient.update.byEmail(req.body.email, {
+          isMentor: true
         }, function (err, user) {
           if (err) {
             // We need some better error handling
