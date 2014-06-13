@@ -41,6 +41,33 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
       return res.send(200);
     },
 
+    revoke: function revokeHook(req, res) {
+      if (req.body.badge.slug === SUPERMENTOR_BADGE_SLUG) {
+        userClient.update.byEmail(req.body.email, {
+          isSuperMentor: false
+        }, function (err, user) {
+          if (err) {
+            // We need some better error handling
+            return console.log(err);
+          }
+        });
+      }
+
+      if (req.body.badge.slug === MENTOR_BADGE_SLUG) {
+        userClient.update.byEmail(req.body.email, {
+          isMentor: false
+        }, function (err, user) {
+          if (err) {
+            // We need some better error handling
+            return console.log(err);
+          }
+        });
+      }
+
+      return res.send(200);
+
+    },
+
     claim: function claimHook(req, res) {
       return res.send(200);
     },
