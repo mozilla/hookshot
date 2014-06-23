@@ -4,17 +4,35 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
   const BADGEKIT_API_SYSTEM = env.get('BADGEKIT_API_SYSTEM', 'webmaker');
   const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-mentor');
   const SUPERMENTOR_BADGE_SLUG = env.get('SUPERMENTOR_BADGE_SLUG', 'webmaker-super-mentor')
+  const HIVE_BADGE_SLUG = env.get('HIVE_BADGE_SLUG', 'hive-community-memmber');
 
   return {
     award: function awardHook(req, res) {
-      var hatchetData = {
-        badge: req.body.badge,
-        email: req.body.email,
-        assertionUrl: req.body.assertionUrl,
-        comment: req.body.comment
-      };
 
-      hatchet.send('badge_awarded', hatchetData);
+      if (req.body.badge.slug === HIVE_BADGE_SLUG) {
+        userClient.get.byEmail(req.body.email, {
+        }, function (err, user) {
+          var hatchetData = {
+            email: req.body.email,
+            comments: req.body.comment,
+            badgeUrl: req.body.badge.criteriaUrl,
+          };
+          if (user) {
+            hatcheData.username = user.username;
+            hatchetData.profileUrl = env.get('WEBMAKER_URL')  + '/user/' + user.username;
+          } else {
+            hatchetData.signUpUrl = env.get('WEBMAKER_URL');
+          }
+          hatchet.send('hive_badge_awarded', hatcheData);
+        });
+      } else {
+        hatchet.send('badge_awarded', {
+          badge: req.body.badge,
+          email: req.body.email,
+          assertionUrl: req.body.assertionUrl,
+          comment: req.body.comment
+        });
+      }
 
       if (req.body.badge.slug === SUPERMENTOR_BADGE_SLUG) {
         userClient.update.byEmail(req.body.email, {
