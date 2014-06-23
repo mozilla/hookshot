@@ -4,7 +4,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
   const BADGEKIT_API_SYSTEM = env.get('BADGEKIT_API_SYSTEM', 'webmaker');
   const MENTOR_BADGE_SLUG = env.get('MENTOR_BADGE_SLUG', 'webmaker-mentor');
   const SUPERMENTOR_BADGE_SLUG = env.get('SUPERMENTOR_BADGE_SLUG', 'webmaker-super-mentor')
-  const HIVE_BADGE_SLUG = env.get('HIVE_BADGE_SLUG', 'hive-community-memmber');
+  const HIVE_BADGE_SLUG = env.get('HIVE_BADGE_SLUG', 'hive-community-member');
 
   return {
     award: function awardHook(req, res) {
@@ -14,7 +14,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
         }, function (err, user) {
           var hatchetData = {
             email: req.body.email,
-            comments: req.body.comment,
+            comment: req.body.comment,
             badgeUrl: req.body.badge.criteriaUrl,
           };
           if (user) {
