@@ -17,7 +17,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
             badgeUrl: req.body.badge.criteriaUrl,
           };
           if (user) {
-            hatcheData.username = user.username;
+            hatchetData.username = user.username;
             hatchetData.profileUrl = env.get('WEBMAKER_URL')  + '/user/' + user.username;
           } else {
             hatchetData.signUpUrl = env.get('WEBMAKER_URL');
