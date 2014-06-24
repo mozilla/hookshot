@@ -19,7 +19,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
           };
           if (user) {
             hatchetData.username = user.username;
-            hatchetData.profileUrl = env.get('WEBMAKER_URL')  + '/user/' + user.username;
+            hatchetData.profileUrl = env.get('WEBMAKER_URL')  + '/user/' + user.username + '/badges';
           } else {
             hatchetData.signUpUrl = env.get('WEBMAKER_URL');
           }
