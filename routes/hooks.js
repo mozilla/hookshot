@@ -10,8 +10,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
     award: function awardHook(req, res) {
 
       if (req.body.badge.slug === HIVE_BADGE_SLUG) {
-        userClient.get.byEmail(req.body.email, {
-        }, function (err, user) {
+        userClient.get.byEmail(req.body.email, function (err, user) {
           var hatchetData = {
             email: req.body.email,
             comment: req.body.comment,
