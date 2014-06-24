@@ -22,7 +22,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
           } else {
             hatchetData.signUpUrl = env.get('WEBMAKER_URL');
           }
-          hatchet.send('hive_badge_awarded', hatcheData);
+          hatchet.send('hive_badge_awarded', hatchetData);
         });
       } else {
         hatchet.send('badge_awarded', {
