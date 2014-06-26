@@ -117,7 +117,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
         application: application,
         review: review,
         badge: badge,
-        comment: comment
+        comment: review.comment
       };
 
       if (approved) {
