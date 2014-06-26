@@ -19,6 +19,8 @@ module.exports = function(env) {
 
     var hook = hooks[req.body.action];
 
+    console.log('/webhook ' + req.body.action + ': %j', req.body);
+
     if (hook) {
       return hook(req, res);
     } else {
