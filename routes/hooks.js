@@ -115,7 +115,9 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
       const hatchetData = {
         email: application.learner,
         application: application,
-        review: review
+        review: review,
+        badge: badge,
+        comment: comment
       };
 
       if (approved) {
