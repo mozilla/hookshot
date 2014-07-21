@@ -21,7 +21,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
             hatchetData.username = user.username;
             hatchetData.profileUrl = env.get('WEBMAKER_URL')  + '/user/' + user.username + '/badges';
           } else {
-            hatchetData.signUpUrl = env.get('WEBMAKER_URL');
+            hatchetData.signUpUrl = env.get('SIGN_UP_URL');
           }
           hatchet.send('hive_badge_awarded', hatchetData);
         });
@@ -30,7 +30,8 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
           badge: req.body.badge,
           email: req.body.email,
           assertionUrl: req.body.assertionUrl,
-          comment: req.body.comment
+          comment: req.body.comment,
+          signUpUrl: env.get('SIGN_UP_URL')
         });
       }
 
