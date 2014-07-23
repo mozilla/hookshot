@@ -26,12 +26,21 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
           hatchet.send('hive_badge_awarded', hatchetData);
         });
       } else {
-        hatchet.send('badge_awarded', {
-          badge: req.body.badge,
-          email: req.body.email,
-          assertionUrl: req.body.assertionUrl,
-          comment: req.body.comment,
-          signUpUrl: env.get('SIGN_UP_URL')
+        userClient.get.byEmail(req.body.email, function (err, data) {
+          var user = data.user;
+          var hatchetData = {
+            badge: req.body.badge,
+            email: req.body.email,
+            assertionUrl: req.body.assertionUrl,
+            comment: req.body.comment,
+            signUpUrl: env.get('SIGN_UP_URL')
+          }
+
+          if (user) {
+            hatchetData.user = { username: user.username, id: user.id };
+          }
+
+          hatchet.send('badge_awarded', hatchetData);
         });
       }
 
@@ -125,12 +134,11 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
         var query = {
           system: badge.system.slug,
           badge: badge.slug,
-          email: application.learner,
-          comment: review.comment
+          email: application.learner
         }
 
         hatchet.send('badge_application_approved', hatchetData);
-        return badgekitApi.createBadgeInstance(query, finish);
+        return badgekitApi.createBadgeInstance(query, { comment: review.comment }, finish);
       }
       else {
         hatchet.send('badge_application_denied', hatchetData);
