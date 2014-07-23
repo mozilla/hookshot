@@ -37,7 +37,7 @@ module.exports = function (env, badgekitApi, badgekitUserApi, userClient) {
           }
 
           if (user) {
-            hatchetData.user = { username: user.username };
+            hatchetData.user = { username: user.username, id: user.id };
           }
 
           hatchet.send('badge_awarded', hatchetData);
